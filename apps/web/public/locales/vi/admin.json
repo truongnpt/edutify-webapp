@@ -1,0 +1,44 @@
+{
+  "dashboardTitle": "Bảng quản trị",
+  "dashboardDescription": "Quản trị user, duyệt xe và gói đăng ký {{productName}}.",
+  "stats": {
+    "accounts": "Tài khoản",
+    "owners": "Chủ xe",
+    "pendingCars": "Xe chờ duyệt",
+    "publishedCars": "Xe đang cho thuê"
+  },
+  "tabs": {
+    "users": "Người dùng",
+    "cars": "Duyệt xe",
+    "subscriptions": "Gói đăng ký",
+    "categories": "Loại xe"
+  },
+  "users": {
+    "title": "Quản lý role",
+    "description": "Đổi role tài khoản (chỉ super_admin)."
+  },
+  "cars": {
+    "title": "Duyệt xe",
+    "description": "Chủ xe gửi trạng thái \"Chờ duyệt\" — admin xuất bản hoặc trả về nháp.",
+    "pendingCount": "{{count}} xe chờ duyệt",
+    "approve": "Duyệt",
+    "reject": "Từ chối",
+    "view": "Xem",
+    "columns": {
+      "car": "Xe",
+      "type": "Loại",
+      "owner": "Chủ xe",
+      "status": "Trạng thái",
+      "price": "Giá/ngày",
+      "actions": "Thao tác"
+    }
+  },
+  "categories": {
+    "title": "Loại xe",
+    "description": "Thêm, sửa, ẩn loại xe dùng trên form chủ xe và bộ lọc công khai."
+  },
+  "subscriptions": {
+    "title": "Gói chủ xe",
+    "description": "Gán gói basic / pro / unlimited qua admin_set_subscription."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "dashboardTitle": "Bảng điều khiển chủ xe",
+  "dashboardDescription": "Quản lý hồ sơ, gói đăng ký và xe cho thuê.",
+  "pendingBookings": "Bạn có <link>{{count}} yêu cầu đặt xe</link> chờ xác nhận.",
+  "carLimitReached": "Đã đạt giới hạn xe của gói. <link>Nâng cấp gói</link>",
+  "carsPageTitle": "Quản lý xe",
+  "carsPageDescription": "Thêm, sửa và quản lý trạng thái xe của bạn.",
+  "addCarLink": "Thêm xe",
+  "newCarTitle": "Thêm xe",
+  "newCarDescription": "Điền thông tin xe để đăng cho thuê.",
+  "editCarTitle": "Sửa xe",
+  "subscriptionPageTitle": "Gói đăng ký",
+  "subscriptionPageDescription": "Chọn gói phù hợp để đăng xe trên {{productName}}.",
+  "stats": {
+    "totalCars": "Tổng số xe",
+    "published": "Đang cho thuê",
+    "pending": "Chờ duyệt",
+    "draft": "Nháp",
+    "quickActions": "Thao tác nhanh",
+    "addCar": "Thêm xe",
+    "viewBookings": "Yêu cầu đặt xe"
+  }
+}

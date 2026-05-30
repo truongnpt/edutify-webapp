@@ -1,0 +1,30 @@
+{
+  "listingTitle": "Thuê xe",
+  "listingDescription": "Khám phá xe cho thuê có tài xế (chủ xe lái) trên {{productName}}. Giá liên hệ trực tiếp với chủ xe.",
+  "listingMetaDescription": "Tìm và thuê xe có tài xế theo ngày. Lọc theo địa điểm, loại xe và số ghế.",
+  "listingMetaTitle": "Thuê xe — {{productName}}",
+  "searchPlaceholder": "Tìm tên, địa điểm...",
+  "locationPlaceholder": "Địa điểm",
+  "allCategories": "Tất cả loại",
+  "minPricePlaceholder": "Giá từ",
+  "maxPricePlaceholder": "Giá đến",
+  "minSeatsPlaceholder": "Số ghế tối thiểu",
+  "searchButton": "Tìm xe",
+  "noResults": "Không tìm thấy xe phù hợp. Thử đổi bộ lọc.",
+  "noImage": "Chưa có ảnh",
+  "contactPrice": "Liên hệ",
+  "withDriver": "Có tài xế",
+  "perDay": "/ ngày",
+  "seats": "{{count}} ghế",
+  "seatsShort": "{{count}} chỗ ngồi",
+  "backToList": "← Danh sách xe",
+  "notFound": "Không tìm thấy xe",
+  "metaTitleWithLocation": "Thuê xe {{location}}",
+  "metaDescription": "Thuê {{name}} tại {{location}}. Từ {{price}}/ngày.",
+  "status": {
+    "draft": "Nháp",
+    "pending_review": "Chờ duyệt",
+    "published": "Đang cho thuê",
+    "archived": "Ngừng cho thuê"
+  }
+}
