@@ -123,6 +123,31 @@ Các biến public khác xem trong `apps/web/.env`, README (tên app, theme, `NE
 
 Script build của `web` dùng `dotenv -e ./.env.local`; trên CI nếu thiếu file, cần hoặc tạo `.env.local` chỉ trên CI (secret từ hosting), hoặc điều chỉnh pipeline để `next build` nhận đủ biến từ môi trường — tuỳ cách bạn cấu hình Vercel/Railway.
 
+**Stripe (tùy chọn — nâng cấp gói qua thẻ):**
+
+| Biến | Ghi chú |
+|------|---------|
+| `STRIPE_SECRET_KEY` | Secret key (`sk_test_…` / `sk_live_…`). **Không** public. |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret webhook (`whsec_…`). |
+| `STRIPE_PRICE_PRO` | Price ID gói Pro (`price_…`), hoặc set `plans.stripe_price_id` trong DB. |
+| `STRIPE_PRICE_ENTERPRISE` | Price ID gói Enterprise. |
+
+**Webhook production:** Stripe Dashboard → Developers → Webhooks → Add endpoint:
+
+- URL: `https://<domain>/api/billing/stripe/webhook`
+- Events: `checkout.session.completed`, `customer.subscription.deleted`
+
+**Webhook local:** cài [Stripe CLI](https://stripe.com/docs/stripe-cli), chạy:
+
+```bash
+cd apps/web
+pnpm stripe:listen
+```
+
+Copy `whsec_…` in ra terminal vào `STRIPE_WEBHOOK_SECRET` trong `.env.local`, rồi restart `pnpm dev`.
+
+**Customer Portal:** bật trong Stripe Dashboard → Settings → Billing → Customer portal (mặc định test mode). Nút *Quản lý gói* trên `/home/billing` mở portal cho org đã có `stripe_customer_id`.
+
 ### 3.2 Deploy Vercel (monorepo pnpm)
 
 Trên **Vercel → Project → Settings → General**:

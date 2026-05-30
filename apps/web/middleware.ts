@@ -122,6 +122,20 @@ function getPatterns() {
       },
     },
     {
+      pattern: new URLPattern({ pathname: '/exam/*?' }),
+      handler: async (req: NextRequest, res: NextResponse) => {
+        const { data } = await getUser(req, res);
+
+        if (!data?.claims) {
+          const signIn = pathsConfig.auth.signIn;
+          const next = req.nextUrl.pathname;
+          return NextResponse.redirect(
+            new URL(`${signIn}?next=${next}`, req.nextUrl.origin).href,
+          );
+        }
+      },
+    },
+    {
       pattern: new URLPattern({ pathname: '/home/*?' }),
       handler: async (req: NextRequest, res: NextResponse) => {
         const { data } = await getUser(req, res);

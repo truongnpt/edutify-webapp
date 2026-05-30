@@ -12,6 +12,7 @@ import { SidebarProvider } from '@kit/ui/shadcn-sidebar';
 
 import { AppLogo } from '~/components/app-logo';
 import { navigationConfig } from '~/config/navigation.config';
+import { getNavigationForUser } from '~/lib/lms/navigation/get-navigation-for-user';
 import { withI18n } from '~/lib/i18n/with-i18n';
 import { requireUserInServerComponent } from '~/lib/server/require-user-in-server-component';
 
@@ -33,18 +34,23 @@ function HomeLayout({ children }: React.PropsWithChildren) {
 export default withI18n(HomeLayout);
 
 function SidebarLayout({ children }: React.PropsWithChildren) {
-  const sidebarMinimized = navigationConfig.sidebarCollapsed;
-  const [user] = use(Promise.all([requireUserInServerComponent()]));
+  const sidebarDefaultOpen = !navigationConfig.sidebarCollapsed;
+  const [user, navConfig] = use(
+    Promise.all([
+      requireUserInServerComponent(),
+      requireUserInServerComponent().then((u) => getNavigationForUser(u.id)),
+    ]),
+  );
 
   return (
-    <SidebarProvider defaultOpen={sidebarMinimized}>
+    <SidebarProvider defaultOpen={sidebarDefaultOpen}>
       <Page style={'sidebar'}>
         <PageNavigation>
-          <HomeSidebar user={user} />
+          <HomeSidebar user={user} navigationConfig={navConfig} />
         </PageNavigation>
 
         <PageMobileNavigation className={'flex items-center justify-between gap-2'}>
-          <MobileNavigation />
+          <MobileNavigation navigationConfig={navConfig} />
         </PageMobileNavigation>
 
         {children}
@@ -54,14 +60,18 @@ function SidebarLayout({ children }: React.PropsWithChildren) {
 }
 
 function HeaderLayout({ children }: React.PropsWithChildren) {
+  const navConfig = use(
+    requireUserInServerComponent().then((u) => getNavigationForUser(u.id)),
+  );
+
   return (
     <Page style={'header'}>
       <PageNavigation>
-        <HomeMenuNavigation />
+        <HomeMenuNavigation navigationConfig={navConfig} />
       </PageNavigation>
 
       <PageMobileNavigation className={'flex items-center justify-between'}>
-        <MobileNavigation />
+        <MobileNavigation navigationConfig={navConfig} />
       </PageMobileNavigation>
 
       {children}
@@ -69,12 +79,16 @@ function HeaderLayout({ children }: React.PropsWithChildren) {
   );
 }
 
-function MobileNavigation() {
+function MobileNavigation({
+  navigationConfig,
+}: {
+  navigationConfig: Awaited<ReturnType<typeof getNavigationForUser>>;
+}) {
   return (
     <>
       <AppLogo />
 
-      <HomeMobileNavigation />
+      <HomeMobileNavigation navigationConfig={navigationConfig} />
     </>
   );
 }

@@ -10,12 +10,13 @@ import {
 
 import { AppLogo } from '~/components/app-logo';
 import { ProfileAccountDropdownContainer } from '~/components/personal-account-dropdown-container';
-import { navigationConfig } from '~/config/navigation.config';
 import { Tables } from '~/lib/database.types';
+import type { LmsNavigationConfig } from '~/lib/lms/navigation/get-navigation-for-user';
 
 export function HomeSidebar(props: {
   account?: Tables<'accounts'>;
   user: JwtPayload;
+  navigationConfig: LmsNavigationConfig;
 }) {
   return (
     <Sidebar collapsible={'icon'}>
@@ -28,7 +29,7 @@ export function HomeSidebar(props: {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarNavigation config={navigationConfig} />
+        <SidebarNavigation config={props.navigationConfig} />
       </SidebarContent>
 
       <SidebarFooter>

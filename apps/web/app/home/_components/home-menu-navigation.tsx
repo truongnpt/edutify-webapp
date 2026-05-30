@@ -1,23 +1,18 @@
-import dynamic from 'next/dynamic';
-
 import {
   BorderedNavigationMenu,
   BorderedNavigationMenuItem,
 } from '@kit/ui/bordered-navigation-menu';
+import { LanguageToggle } from '@kit/ui/language-toggle';
 
 import { AppLogo } from '~/components/app-logo';
 import { ProfileAccountDropdownContainer } from '~/components/personal-account-dropdown-container';
-import { navigationConfig } from '~/config/navigation.config';
+import type { LmsNavigationConfig } from '~/lib/lms/navigation/get-navigation-for-user';
 
-const LanguageToggle = dynamic(
-  () =>
-    import('@kit/ui/language-toggle').then((mod) => ({
-      default: mod.LanguageToggle,
-    })),
-  { ssr: false },
-);
-
-export function HomeMenuNavigation() {
+export function HomeMenuNavigation({
+  navigationConfig,
+}: {
+  navigationConfig: LmsNavigationConfig;
+}) {
   const routes = navigationConfig.routes.reduce<
     Array<{
       path: string;

@@ -16,13 +16,18 @@ import {
 import { LanguageToggle } from '@kit/ui/language-toggle';
 import { Trans } from '@kit/ui/trans';
 
-import { navigationConfig } from '~/config/navigation.config';
+import { navigationConfig as defaultNavigationConfig } from '~/config/navigation.config';
+import type { LmsNavigationConfig } from '~/lib/lms/navigation/get-navigation-for-user';
 
 /**
  * Mobile navigation for the home page
  * @constructor
  */
-export function HomeMobileNavigation() {
+export function HomeMobileNavigation({
+  navigationConfig = defaultNavigationConfig,
+}: {
+  navigationConfig?: LmsNavigationConfig;
+}) {
   const signOut = useSignOut();
 
   const Links = navigationConfig.routes.map((item, index) => {

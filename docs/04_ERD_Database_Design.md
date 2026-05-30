@@ -202,3 +202,21 @@ old_data
 new_data
 
 created_at
+
+---
+
+# Assessment Engine Extension (v1.0)
+
+See [11_Assessment_Engine_Architecture.md](./11_Assessment_Engine_Architecture.md)
+
+## subjects, topics, tags, question_groups
+
+Taxonomy + shared stimulus groups
+
+## questions (evolved)
+
+question_type, title, metadata, answer_schema, scoring_schema, status, grading_mode
+
+## exams → exam_sections → exam_section_items
+
+## exam_attempts → attempt_answers → attempt_logs

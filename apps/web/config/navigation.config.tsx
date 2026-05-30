@@ -1,4 +1,4 @@
-import { Home, User } from 'lucide-react';
+import { BookOpen, Building2, CalendarClock, ClipboardList, GraduationCap, Home, User } from 'lucide-react';
 import { z } from 'zod';
 
 import { NavigationConfigSchema } from '@kit/ui/navigation-schema';
@@ -17,11 +17,36 @@ const routes = [
         Icon: <Home className={iconClasses} />,
         end: true,
       },
+      {
+        label: 'common:routes.questions',
+        path: pathsConfig.app.questions,
+        Icon: <BookOpen className={iconClasses} />,
+      },
+      {
+        label: 'common:routes.exams',
+        path: pathsConfig.app.exams,
+        Icon: <ClipboardList className={iconClasses} />,
+      },
+      {
+        label: 'common:routes.students',
+        path: pathsConfig.app.students,
+        Icon: <GraduationCap className={iconClasses} />,
+      },
+      {
+        label: 'common:routes.assignments',
+        path: pathsConfig.app.assignments,
+        Icon: <CalendarClock className={iconClasses} />,
+      },
     ],
   },
   {
     label: 'common:routes.settings',
     children: [
+      {
+        label: 'common:routes.organization',
+        path: pathsConfig.app.organization,
+        Icon: <Building2 className={iconClasses} />,
+      },
       {
         label: 'common:routes.profile',
         path: pathsConfig.app.profileSettings,
