@@ -272,41 +272,48 @@ create trigger on_auth_user_created
     for each row
 execute procedure kit.new_user_created_setup();
 
--- Storage
--- Account Image
-insert into storage.buckets (id, name, PUBLIC)
-values ('account_image', 'account_image', true);
-
--- Function: get the storage filename as a UUID.
--- Useful if you want to name files with UUIDs related to an account
-create
-    or replace function kit.get_storage_filename_as_uuid(name text) returns uuid
-    set
-        search_path = '' as
-$$
+-- Storage (skipped during local `supabase start` until storage-api init; see seed.sql)
+do $account_image_storage$
 begin
-    return replace(storage.filename(name), concat('.',
-                                                  storage.extension(name)), '')::uuid;
+    if not exists (
+        select 1
+        from information_schema.tables
+        where table_schema = 'storage'
+          and table_name = 'buckets'
+    ) then
+        return;
+    end if;
 
-end;
+    insert into storage.buckets (id, name, public)
+    values ('account_image', 'account_image', true)
+    on conflict (id) do nothing;
 
-$$ language plpgsql;
+    create or replace function kit.get_storage_filename_as_uuid(name text)
+    returns uuid
+    language plpgsql
+    set search_path = ''
+    as $fn$
+    begin
+        return replace(
+            storage.filename(name),
+            concat('.', storage.extension(name)),
+            ''
+        )::uuid;
+    end;
+    $fn$;
 
-grant
-    execute on function kit.get_storage_filename_as_uuid (text) to authenticated,
-    service_role;
+    grant execute on function kit.get_storage_filename_as_uuid(text) to authenticated, service_role;
 
--- RLS policies for storage bucket account_image
-create policy account_image on storage.objects for all using (
-    bucket_id = 'account_image'
-        and (
-        kit.get_storage_filename_as_uuid(name) = auth.uid()
-        )
+    drop policy if exists account_image on storage.objects;
+
+    create policy account_image on storage.objects
+    for all
+    using (
+        bucket_id = 'account_image'
+        and kit.get_storage_filename_as_uuid(name) = auth.uid()
     )
-    with
-    check (
-    bucket_id = 'account_image'
-        and (
-        kit.get_storage_filename_as_uuid(name) = auth.uid()
-        )
+    with check (
+        bucket_id = 'account_image'
+        and kit.get_storage_filename_as_uuid(name) = auth.uid()
     );
+end $account_image_storage$;

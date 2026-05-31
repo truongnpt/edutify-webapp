@@ -784,19 +784,33 @@ begin
 end;
 $$;
 
--- Organization logo storage bucket
-insert into storage.buckets (id, name, public)
-values ('organization_logos', 'organization_logos', true)
-on conflict (id) do nothing;
+-- Organization logo storage bucket (see seed.sql when storage is not ready yet)
+do $organization_logos_storage$
+begin
+    if not exists (
+        select 1
+        from information_schema.tables
+        where table_schema = 'storage'
+          and table_name = 'buckets'
+    ) then
+        return;
+    end if;
 
-create policy organization_logos on storage.objects
-    for all to authenticated
-    using (
-        bucket_id = 'organization_logos'
-        and (storage.foldername(name))[1]::uuid in (select public.get_auth_user_org_ids())
-    )
-    with check (
-        bucket_id = 'organization_logos'
-        and (storage.foldername(name))[1]::uuid in (select public.get_auth_user_org_ids())
-        and public.user_can_manage_organization((storage.foldername(name))[1]::uuid)
-    );
+    insert into storage.buckets (id, name, public)
+    values ('organization_logos', 'organization_logos', true)
+    on conflict (id) do nothing;
+
+    drop policy if exists organization_logos on storage.objects;
+
+    create policy organization_logos on storage.objects
+        for all to authenticated
+        using (
+            bucket_id = 'organization_logos'
+            and (storage.foldername(name))[1]::uuid in (select public.get_auth_user_org_ids())
+        )
+        with check (
+            bucket_id = 'organization_logos'
+            and (storage.foldername(name))[1]::uuid in (select public.get_auth_user_org_ids())
+            and public.user_can_manage_organization((storage.foldername(name))[1]::uuid)
+        );
+end $organization_logos_storage$;

@@ -361,40 +361,55 @@ grant execute on function public.approve_payment(uuid) to authenticated, service
 grant execute on function public.reject_payment(uuid, text) to authenticated, service_role;
 
 -- ---------------------------------------------------------------------------
--- Payment proof storage
+-- Payment proof storage (see seed.sql when storage is not ready yet)
 -- ---------------------------------------------------------------------------
 
-insert into storage.buckets (id, name, public)
-values ('payment_proofs', 'payment_proofs', false)
-on conflict (id) do nothing;
+do $payment_proofs_storage$
+begin
+    if not exists (
+        select 1
+        from information_schema.tables
+        where table_schema = 'storage'
+          and table_name = 'buckets'
+    ) then
+        return;
+    end if;
 
-create policy payment_proofs_insert on storage.objects
-    for insert to authenticated
-    with check (
-        bucket_id = 'payment_proofs'
-        and (storage.foldername(name))[1] in (
-            select om.organization_id::text
-            from public.organization_members om
-            where om.user_id = auth.uid()
-              and om.role = 'owner'
-              and om.deleted_at is null
-        )
-    );
+    insert into storage.buckets (id, name, public)
+    values ('payment_proofs', 'payment_proofs', false)
+    on conflict (id) do nothing;
 
-create policy payment_proofs_select on storage.objects
-    for select to authenticated
-    using (
-        bucket_id = 'payment_proofs'
-        and (
-            (storage.foldername(name))[1] in (
+    drop policy if exists payment_proofs_insert on storage.objects;
+    drop policy if exists payment_proofs_select on storage.objects;
+
+    create policy payment_proofs_insert on storage.objects
+        for insert to authenticated
+        with check (
+            bucket_id = 'payment_proofs'
+            and (storage.foldername(name))[1] in (
                 select om.organization_id::text
                 from public.organization_members om
                 where om.user_id = auth.uid()
+                  and om.role = 'owner'
                   and om.deleted_at is null
             )
-            or public.is_platform_admin()
-        )
-    );
+        );
+
+    create policy payment_proofs_select on storage.objects
+        for select to authenticated
+        using (
+            bucket_id = 'payment_proofs'
+            and (
+                (storage.foldername(name))[1] in (
+                    select om.organization_id::text
+                    from public.organization_members om
+                    where om.user_id = auth.uid()
+                      and om.deleted_at is null
+                )
+                or public.is_platform_admin()
+            )
+        );
+end $payment_proofs_storage$;
 
 -- Seed: first auth user as platform admin (local dev convenience)
 insert into public.platform_admins (user_id)
