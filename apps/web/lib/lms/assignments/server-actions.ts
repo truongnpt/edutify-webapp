@@ -241,8 +241,6 @@ export const deleteAssignmentAction = enhanceAction(
   { schema: DeleteAssignmentSchema },
 );
 
-const MY_EXAMS_PATH = '/home/my-exams';
-
 export async function loadMyAssignments(
   userId: string,
   userEmail: string,
@@ -354,5 +352,3 @@ export async function loadMyAssignments(
     studentLinked: true,
   };
 }
-
-export { MY_EXAMS_PATH };

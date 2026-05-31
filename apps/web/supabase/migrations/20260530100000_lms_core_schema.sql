@@ -8,33 +8,49 @@
 -- Enums
 -- ---------------------------------------------------------------------------
 
-create type public.organization_role as enum (
-    'owner',
-    'admin',
-    'teacher',
-    'student'
-);
+do $$ begin
+    create type public.organization_role as enum (
+        'owner',
+        'admin',
+        'teacher',
+        'student'
+    );
+exception
+    when duplicate_object then null;
+end $$;
 
-create type public.member_status as enum (
-    'active',
-    'invited',
-    'suspended'
-);
+do $$ begin
+    create type public.member_status as enum (
+        'active',
+        'invited',
+        'suspended'
+    );
+exception
+    when duplicate_object then null;
+end $$;
 
-create type public.question_type as enum (
-    'single_choice',
-    'multiple_choice',
-    'true_false',
-    'essay',
-    'fill_blank'
-);
+do $$ begin
+    create type public.question_type as enum (
+        'single_choice',
+        'multiple_choice',
+        'true_false',
+        'essay',
+        'fill_blank'
+    );
+exception
+    when duplicate_object then null;
+end $$;
 
-create type public.subscription_status as enum (
-    'active',
-    'cancelled',
-    'expired',
-    'trialing'
-);
+do $$ begin
+    create type public.subscription_status as enum (
+        'active',
+        'cancelled',
+        'expired',
+        'trialing'
+    );
+exception
+    when duplicate_object then null;
+end $$;
 
 -- ---------------------------------------------------------------------------
 -- Utility: updated_at trigger

@@ -170,8 +170,7 @@
     "importDescription": "Upload .xlsx or .csv with columns: fullName (or Họ tên), email",
     "chooseFile": "Choose file",
     "importPreview": "{{count}} valid row(s) found",
-    "importConfirm": "Import students"
-  },
+    "importConfirm": "Import students",
     "listTitle": "Student List",
     "listDescription": "Students without linked accounts can still receive exam assignments by email."
   },
