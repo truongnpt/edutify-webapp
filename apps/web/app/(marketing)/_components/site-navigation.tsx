@@ -12,6 +12,13 @@ import { NavigationMenu, NavigationMenuList } from '@kit/ui/navigation-menu';
 import { Trans } from '@kit/ui/trans';
 
 import { SiteNavigationItem } from './site-navigation-item';
+import { Separator } from '@kit/ui/separator';
+import { LanguageToggle } from '@kit/ui/language-toggle';
+import { Button } from '@kit/ui/button';
+import pathsConfig from '~/config/paths.config';
+import { If } from '@kit/ui/if';
+import { ModeToggle } from '@kit/ui/mode-toggle';
+import featuresFlagConfig from '~/config/feature-flags.config';
 
 /**
  * Add your navigation links here
@@ -47,6 +54,10 @@ const links: Record<
   },
 };
 
+const features = {
+  enableThemeToggle: featuresFlagConfig.enableThemeToggle,
+};
+
 export function SiteNavigation() {
   const NavItems = Object.values(links).map((item) => {
     return (
@@ -80,9 +91,9 @@ function MobileDropdown() {
         <Menu className={'h-8 w-8'} />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className={'w-full'}>
+      <DropdownMenuContent className={'relative w-full translate-y-2 h-[calc(100vh-60px)]'}>
         {Object.values(links).map((item) => {
-          const className = 'flex w-full h-full items-center';
+          const className = 'flex w-full h-12 items-center';
 
           return (
             <DropdownMenuItem key={item.path} asChild>
@@ -92,6 +103,22 @@ function MobileDropdown() {
             </DropdownMenuItem>
           );
         })}
+        <div className="absolute bottom-0 left-0 right-0 py-2">
+          <Separator className="mb-2" />
+          <div className="flex items-center justify-between gap-2 px-">
+            <LanguageToggle />
+            <div className="flex items-center justify-end gap-2">
+              <If condition={features.enableThemeToggle}>
+                <ModeToggle />
+              </If>
+              <Button asChild size="sm">
+                <Link href={pathsConfig.auth.signIn}>
+                  <Trans i18nKey={'auth:signIn'} />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

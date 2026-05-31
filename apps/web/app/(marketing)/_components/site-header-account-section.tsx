@@ -83,26 +83,34 @@ function SuspendedPersonalAccountDropdown(props: { user: JwtPayload | null }) {
 
 function AuthButtons() {
   return (
-    <div className={'flex items-center space-x-2'}>
-      <div className={'flex items-center space-x-2'}>
+    <>
+      <div className={'flex shrink-0 items-center md:hidden'}>
+        <Button asChild className="group" size="sm" variant={'default'}>
+          <Link href={pathsConfig.auth.signUp}>
+            <Trans i18nKey={'auth:signUp'} />
+          </Link>
+        </Button>
+      </div>
+
+      <div className={'hidden shrink-0 items-center gap-2 md:flex'}>
         <LanguageToggle />
 
         <If condition={features.enableThemeToggle}>
           <ModeToggle />
         </If>
 
-        <Button asChild variant={'ghost'}>
+        <Button asChild size="sm" variant={'ghost'}>
           <Link href={pathsConfig.auth.signIn}>
             <Trans i18nKey={'auth:signIn'} />
           </Link>
         </Button>
-      </div>
 
-      <Button asChild className="group" variant={'default'}>
-        <Link href={pathsConfig.auth.signUp}>
-          <Trans i18nKey={'auth:signUp'} />
-        </Link>
-      </Button>
-    </div>
+        <Button asChild className="group" size="sm" variant={'default'}>
+          <Link href={pathsConfig.auth.signUp}>
+            <Trans i18nKey={'auth:signUp'} />
+          </Link>
+        </Button>
+      </div>
+    </>
   );
 }
