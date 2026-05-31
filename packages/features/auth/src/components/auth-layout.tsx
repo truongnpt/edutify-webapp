@@ -2,7 +2,7 @@ export function AuthLayoutShell({
   children,
   Logo,
 }: React.PropsWithChildren<{
-  Logo?: React.ComponentType;
+  Logo?: React.ComponentType<{ className?: string }>;
 }>) {
   return (
     <div
@@ -12,7 +12,7 @@ export function AuthLayoutShell({
         ' animate-in fade-in slide-in-from-top-16 zoom-in-95 duration-1000'
       }
     >
-      {Logo ? <Logo /> : null}
+      {Logo ? <Logo className="w-auto h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32" /> : null}
 
       <div
         className={`bg-background flex w-full max-w-[23rem] flex-col gap-y-6 rounded-lg px-6 md:w-8/12 md:px-8 md:py-6 lg:w-5/12 lg:px-8 xl:w-4/12 xl:gap-y-8 xl:py-8`}

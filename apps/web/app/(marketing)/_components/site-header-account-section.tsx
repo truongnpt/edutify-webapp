@@ -53,7 +53,7 @@ export function SiteHeaderAccountSection({
   }
 
   return (
-    <div className={'flex items-center gap-2'}>
+    <div className={'flex items-center justify-end gap-2'}>
       <LanguageToggle />
 
       <SuspendedPersonalAccountDropdown user={user} />
@@ -85,11 +85,9 @@ function AuthButtons() {
   return (
     <>
       <div className={'flex shrink-0 items-center md:hidden'}>
-        <Button asChild className="group" size="sm" variant={'default'}>
-          <Link href={pathsConfig.auth.signUp}>
-            <Trans i18nKey={'auth:signUp'} />
-          </Link>
-        </Button>
+        <If condition={features.enableThemeToggle}>
+          <ModeToggle />
+        </If>
       </div>
 
       <div className={'hidden shrink-0 items-center gap-2 md:flex'}>

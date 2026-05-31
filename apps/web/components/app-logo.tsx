@@ -5,8 +5,8 @@ import appConfig from '~/config/app.config';
 import Image from 'next/image';
 
 const logo = {
-  width: 280,
-  height: 85,
+  width: 640,
+  height: 321,
   src: '/images/logo/edutify-logo.png',
 };
 
@@ -23,7 +23,7 @@ function LogoImage({
     <Image
       alt={appConfig.name}
       className={cn(
-        'h-9 w-auto max-w-[min(100%,220px)] object-contain object-left sm:h-10 lg:h-11',
+        'h-10 w-auto max-w-[min(100%,220px)] object-contain object-left sm:h-10 lg:h-14 xl:h-16',
         className,
       )}
       height={height}

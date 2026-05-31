@@ -1,24 +1,25 @@
+'use client';
+
 import Link from 'next/link';
 
 import { Menu } from 'lucide-react';
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@kit/ui/dropdown-menu';
+import { Button } from '@kit/ui/button';
+import { LanguageToggle } from '@kit/ui/language-toggle';
 import { NavigationMenu, NavigationMenuList } from '@kit/ui/navigation-menu';
+import { Separator } from '@kit/ui/separator';
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from '@kit/ui/sheet';
 import { Trans } from '@kit/ui/trans';
 
-import { SiteNavigationItem } from './site-navigation-item';
-import { Separator } from '@kit/ui/separator';
-import { LanguageToggle } from '@kit/ui/language-toggle';
-import { Button } from '@kit/ui/button';
 import pathsConfig from '~/config/paths.config';
-import { If } from '@kit/ui/if';
-import { ModeToggle } from '@kit/ui/mode-toggle';
-import featuresFlagConfig from '~/config/feature-flags.config';
+
+import { SiteNavigationItem } from './site-navigation-item';
+import { AppLogo } from '~/components/app-logo';
 
 /**
  * Add your navigation links here
@@ -54,10 +55,6 @@ const links: Record<
   },
 };
 
-const features = {
-  enableThemeToggle: featuresFlagConfig.enableThemeToggle,
-};
-
 export function SiteNavigation() {
   const NavItems = Object.values(links).map((item) => {
     return (
@@ -86,40 +83,57 @@ export function SiteNavigation() {
 
 function MobileDropdown() {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger aria-label={'Open Menu'}>
+    <Sheet>
+      <SheetTrigger aria-label={'Open Menu'}>
         <Menu className={'h-8 w-8'} />
-      </DropdownMenuTrigger>
+      </SheetTrigger>
 
-      <DropdownMenuContent className={'relative w-full translate-y-2 h-[calc(100vh-60px)]'}>
-        {Object.values(links).map((item) => {
-          const className = 'flex w-full h-12 items-center';
+      <SheetContent
+        side={'left'}
+        className={'flex h-full w-full flex-col sm:max-w-sm'}
+      >
+        <AppLogo />
+        <nav className={'mt-8 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto'}>
+          {Object.values(links).map((item) => {
+            return (
+              <SheetClose asChild key={item.path}>
+                <Link
+                  href={item.path}
+                  className={
+                    'hover:bg-accent flex h-12 w-full items-center rounded-md px-3'
+                  }
+                >
+                  <Trans i18nKey={item.label} />
+                </Link>
+              </SheetClose>
+            );
+          })}
+        </nav>
 
-          return (
-            <DropdownMenuItem key={item.path} asChild>
-              <Link className={className} href={item.path}>
-                <Trans i18nKey={item.label} />
-              </Link>
-            </DropdownMenuItem>
-          );
-        })}
-        <div className="absolute bottom-0 left-0 right-0 py-2">
-          <Separator className="mb-2" />
-          <div className="flex items-center justify-between gap-2 px-">
-            <LanguageToggle />
-            <div className="flex items-center justify-end gap-2">
-              <If condition={features.enableThemeToggle}>
-                <ModeToggle />
-              </If>
-              <Button asChild size="sm">
+        <Separator className={'my-4 shrink-0'} />
+
+        <div className={'flex shrink-0 items-center justify-between gap-2 pb-2'}>
+          <LanguageToggle />
+
+          <div className={'flex items-center justify-end gap-2'}>
+            <SheetClose asChild>
+              <Button asChild size="sm" variant={'ghost'}>
                 <Link href={pathsConfig.auth.signIn}>
                   <Trans i18nKey={'auth:signIn'} />
                 </Link>
               </Button>
-            </div>
+            </SheetClose>
+
+            <SheetClose asChild>
+              <Button asChild className="group" size="sm" variant={'default'}>
+                <Link href={pathsConfig.auth.signUp}>
+                  <Trans i18nKey={'auth:signUp'} />
+                </Link>
+              </Button>
+            </SheetClose>
           </div>
         </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </SheetContent>
+    </Sheet>
   );
 }
