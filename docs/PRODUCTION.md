@@ -28,7 +28,7 @@ Trên máy có Supabase CLI và đã clone repo:
 
 ```bash
 cd apps/web
-pnpm supabase login
+pnpm supabase login --token <ACCESS_TOKENT>
 pnpm supabase link --project-ref <PROJECT_REF>
 pnpm supabase db push
 ```

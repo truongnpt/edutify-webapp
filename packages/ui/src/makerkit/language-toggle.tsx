@@ -5,7 +5,6 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cn } from '../lib/utils';
-import { Switch } from '../shadcn/switch';
 
 const LOCALE_LABELS: Record<string, string> = {
   en: 'EN',
@@ -32,7 +31,7 @@ export function LanguageToggle(props: { className?: string }) {
   const secondary = locales[1];
 
   const currentLanguage = normalizeLocale(i18n.language) ?? primary;
-  const isSecondary = currentLanguage === secondary;
+  const isDefault = currentLanguage === secondary;
 
   const onCheckedChange = useCallback(
     async (checked: boolean) => {
@@ -55,32 +54,27 @@ export function LanguageToggle(props: { className?: string }) {
   return (
     <div
       className={cn(
-        'flex items-center gap-2 text-xs font-medium',
+        'flex items-center gap-4 text-xs font-medium bg-gray-200 rounded-md p-1',
         props.className,
       )}
       role="group"
       aria-label="Language"
     >
       <span
-        className={cn('transition-colors', {
-          'text-foreground': !isSecondary,
-          'text-muted-foreground': isSecondary,
+        className={cn('transition-colors rounded-md p-1', {
+          'text-foreground bg-white': !isDefault,
+          'text-muted-foreground': isDefault,
         })}
+        onClick={() => onCheckedChange(false)}
       >
         {LOCALE_LABELS[primary] ?? primary.toUpperCase()}
       </span>
-
-      <Switch
-        checked={isSecondary}
-        onCheckedChange={onCheckedChange}
-        aria-label={`Switch to ${LOCALE_LABELS[secondary] ?? secondary.toUpperCase()}`}
-      />
-
       <span
-        className={cn('transition-colors', {
-          'text-foreground': isSecondary,
-          'text-muted-foreground': !isSecondary,
+        className={cn('transition-colors rounded-sm px-2 py-1', {
+          'text-foreground bg-white': isDefault,
+          'text-muted-foreground': !isDefault,
         })}
+        onClick={() => onCheckedChange(true)}
       >
         {LOCALE_LABELS[secondary] ?? secondary.toUpperCase()}
       </span>
